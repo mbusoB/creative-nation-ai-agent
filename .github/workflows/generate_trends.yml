@@ -1,0 +1,35 @@
+name: Weekly Trend Generation
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # Runs every Monday at 00:00 UTC
+  workflow_dispatch:      # Allows manual triggering
+
+jobs:
+  scrape-and-summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install deepseek-api tweepy praw pandas
+
+      - name: Run trend scraper
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          TWITTER_BEARER_TOKEN: ${{ secrets.TWITTER_BEARER_TOKEN }}
+        run: python3 scripts/trend_scraper.py
+
+      - name: Commit and push results
+        run: |
+          git config --global user.name "Creative Nation Bot"
+          git config --global user.email "bot@creativenation.com"
+          git add trends/raw_data/
+          git commit -m "Auto: Update weekly trends"
+          git push
