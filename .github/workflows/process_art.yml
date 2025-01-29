@@ -1,0 +1,22 @@
+name: Generate Article Art
+on:
+  push:
+    paths:
+      - 'content/drafts/*.md'
+
+jobs:
+  generate-art:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Generate art with Stable Diffusion
+        uses: actions/github-script@v6
+        env:
+          STABILITY_API_KEY: ${{ secrets.STABILITY_API_KEY }}
+        with:
+          script: |
+            const articlePath = context.payload.commits[0].added[0];
+            // Add logic to extract prompts from Markdown and call Stable Diffusion API
+            // Save images to /art/generated/
