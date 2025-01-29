@@ -1,0 +1,41 @@
+{"branch_protection_rules": [
+    {
+      "branch": "main",
+      "enforce_admins": false,
+      "required_pull_request_reviews": {
+        "required_approving_review_count": 1,
+        "require_code_owner_reviews": true,
+      },
+      "required_status_checks": {
+        "strict": true,
+        "checks": [
+          "generate_trends",
+          "generate_art"
+        ]
+      },
+      "restrictions": {
+        "users": ["mbusoB"],  
+        "teams": []
+      },
+      "allow_force_pushes": false,
+      "allow_deletions": false,
+      "required_linear_history": true
+    },
+    {
+      "branch": "develop",
+      "enforce_admins": false,
+      "required_pull_request_reviews": {
+        "required_approving_review_count": 1,
+        "require_code_owner_reviews": false
+      },
+      "required_status_checks": {
+        "strict": false,
+        "checks": []
+      },
+      "restrictions": null,
+      "allow_force_pushes": true,
+      "allow_deletions": false,
+      "required_linear_history": false
+    }
+  ]
+}
